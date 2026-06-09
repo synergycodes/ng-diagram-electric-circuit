@@ -1,0 +1,40 @@
+@if (isMinimapOpen()) {
+  <div class="minimap-popover">
+    <ng-diagram-minimap [showZoomControls]="false" [deferNodeUpdates]="deferNodeUpdates()" />
+  </div>
+}
+
+<div class="bar">
+  <button
+    class="step"
+    type="button"
+    (click)="zoomOut()"
+    [disabled]="!canZoomOut()"
+    aria-label="Zoom out"
+  >
+    −
+  </button>
+  <span class="zoom-level h10">{{ zoomPercent() }}</span>
+  <button
+    class="step"
+    type="button"
+    (click)="zoomIn()"
+    [disabled]="!canZoomIn()"
+    aria-label="Zoom in"
+  >
+    +
+  </button>
+
+  <span class="divider" aria-hidden="true"></span>
+
+  <button
+    class="icon-button"
+    type="button"
+    [class.active]="isMinimapOpen()"
+    [attr.aria-pressed]="isMinimapOpen()"
+    (click)="toggleMinimap()"
+    aria-label="Toggle minimap"
+  >
+    <span class="icon icon-map"></span>
+  </button>
+</div>

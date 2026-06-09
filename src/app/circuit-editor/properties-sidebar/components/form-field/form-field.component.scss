@@ -1,0 +1,9 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+label {
+  color: var(--ce-text-secondary);
+}

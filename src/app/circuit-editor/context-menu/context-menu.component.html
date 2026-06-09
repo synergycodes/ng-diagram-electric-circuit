@@ -1,0 +1,23 @@
+@if (state(); as state) {
+  <!-- Presentational click-outside catcher; keyboard users dismiss via Escape/blur. -->
+  <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+  <div class="backdrop" (click)="close()" (contextmenu)="$event.preventDefault(); close()"></div>
+  <div class="menu" role="menu" [style.left.px]="position().x" [style.top.px]="position().y">
+    @for (item of items(); track item.id) {
+      @if (item.separatorBefore) {
+        <div class="separator" aria-hidden="true"></div>
+      }
+      <button
+        class="item p10"
+        type="button"
+        role="menuitem"
+        [class.danger]="item.id === 'delete'"
+        [disabled]="item.disabled"
+        (click)="run(item)"
+      >
+        <span class="icon" [class]="'icon-' + item.icon"></span>
+        {{ item.label }}
+      </button>
+    }
+  </div>
+}

@@ -1,0 +1,25 @@
+<button class="export-button h10" type="button" (click)="toggle()" [attr.aria-expanded]="isOpen()">
+  <span class="icon icon-export"></span>
+  Export
+  <span class="icon icon-caret" [class.open]="isOpen()"></span>
+</button>
+
+@if (isOpen()) {
+  <!-- Presentational click-outside catcher; keyboard users dismiss via Escape/blur. -->
+  <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+  <div class="backdrop" (click)="close()"></div>
+  <div class="menu" role="menu">
+    <button class="item p10" type="button" role="menuitem" (click)="exportSvg()">
+      <span class="icon icon-image"></span>
+      Export as SVG
+    </button>
+    <button class="item p10" type="button" role="menuitem" (click)="exportJpeg()">
+      <span class="icon icon-image"></span>
+      Export as JPEG
+    </button>
+    <button class="item p10" type="button" role="menuitem" (click)="exportJson()">
+      <span class="icon icon-json"></span>
+      Export as JSON
+    </button>
+  </div>
+}

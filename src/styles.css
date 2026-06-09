@@ -1,0 +1,78 @@
+@import './typography.css';
+@import 'ng-diagram/styles.css';
+@import './circuit-theme.css';
+
+/* Wires are plain schematic connections — never show the edge arrowhead.
+   This also covers the temporary edge drawn while linking, which is rendered
+   by ng-diagram with its default arrowhead marker. */
+#ng-diagram-arrow path {
+  stroke: transparent !important;
+}
+
+html {
+  background-color: var(--ce-bg-screen);
+}
+
+html,
+body {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Keyboard focus: one token-backed ring for every interactive element, and no
+   ring on pointer focus. Components must not set bare `outline: none`. */
+:focus-visible {
+  outline: 2px solid var(--ce-focus-ring);
+  outline-offset: 2px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Respect reduced-motion: neutralize transitions and the looping previews. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+p {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ng-diagram documentation
+    url: https://www.ngdiagram.dev/
+    about: Docs and guides for the underlying diagramming library.

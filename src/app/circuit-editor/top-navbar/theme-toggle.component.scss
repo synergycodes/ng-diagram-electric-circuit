@@ -1,0 +1,61 @@
+:host {
+  --icon-size: 14px;
+}
+
+.icon {
+  display: inline-block;
+  background-color: var(--ce-text-secondary);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+
+.icon-sun {
+  mask-image: url('../../../assets/sun.svg');
+  -webkit-mask-image: url('../../../assets/sun.svg');
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+.icon-moon {
+  mask-image: url('../../../assets/moon.svg');
+  -webkit-mask-image: url('../../../assets/moon.svg');
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  background: var(--ce-bg-icon);
+  border: none;
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+  cursor: pointer;
+
+  .toggle-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 0.15s ease;
+
+    .icon {
+      transition: background-color 0.15s ease;
+    }
+
+    &.active {
+      background: var(--ce-orange);
+
+      .icon {
+        background-color: var(--ce-text-on-orange);
+      }
+    }
+  }
+}

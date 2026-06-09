@@ -1,0 +1,64 @@
+<aside class="library" [class.collapsed]="!isExpanded()" aria-label="Component library">
+  <header class="library-header">
+    @if (isExpanded()) {
+      <span class="h9 library-title">Components</span>
+    }
+    <button
+      class="nav-button"
+      type="button"
+      (click)="togglePanel()"
+      [attr.aria-expanded]="isExpanded()"
+      aria-label="Toggle component library"
+    >
+      <span class="icon icon-panel"></span>
+    </button>
+  </header>
+
+  @if (isExpanded()) {
+    <div class="search-row">
+      <div class="search-input">
+        <span class="icon icon-search"></span>
+        <input
+          class="search-field p10"
+          type="text"
+          placeholder="Search components"
+          [value]="search()"
+          (input)="onSearch($event)"
+          aria-label="Search components"
+        />
+      </div>
+      <button class="nav-button" type="button" aria-label="Filter components">
+        <span class="icon icon-filter"></span>
+      </button>
+    </div>
+
+    <div class="sections">
+      @for (section of sections(); track section.category) {
+        <section class="section">
+          <button
+            class="section-header"
+            type="button"
+            (click)="toggleCategory(section.category)"
+            [attr.aria-expanded]="!isCategoryCollapsed(section.category)"
+          >
+            <span class="section-title">{{ section.category }}</span>
+            <span
+              class="icon icon-caret"
+              [class.collapsed]="isCategoryCollapsed(section.category)"
+            ></span>
+          </button>
+
+          @if (!isCategoryCollapsed(section.category)) {
+            <div class="tiles">
+              @for (type of section.types; track type) {
+                <app-palette-tile [type]="type" />
+              }
+            </div>
+          }
+        </section>
+      } @empty {
+        <p class="empty p10">No components match “{{ search() }}”.</p>
+      }
+    </div>
+  }
+</aside>

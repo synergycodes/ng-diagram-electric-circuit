@@ -1,0 +1,22 @@
+<div class="diagram" (contextmenu)="onBackgroundContextMenu($event)">
+  <ng-diagram
+    [model]="model"
+    [config]="diagramConfig"
+    [middlewares]="middlewares"
+    [nodeTemplateMap]="nodeTemplateMap"
+    [edgeTemplateMap]="edgeTemplateMap"
+    (diagramInit)="onDiagramInit()"
+    (paletteItemDropped)="onPaletteItemDropped($event)"
+    (selectionGestureEnded)="onSelectionGestureEnded($event)"
+    (edgeDrawEnded)="onEdgeDrawEnded($event)"
+    (selectionMoved)="onSelectionMoved($event)"
+    (selectionRemoved)="onSelectionRemoved($event)"
+  >
+    <ng-diagram-background type="grid" />
+  </ng-diagram>
+
+  <!-- Junction-related overlays (siblings of ng-diagram, sharing the viewport). -->
+  <app-edge-reshape-overlay />
+  <app-link-drop-preview-overlay />
+  <app-branch-from-wire-overlay />
+</div>

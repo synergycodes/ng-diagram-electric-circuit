@@ -1,0 +1,104 @@
+<aside class="sidebar" aria-labelledby="properties-sidebar-title">
+  <header class="header" [class.collapsed]="!isExpanded()">
+    @if (isExpanded()) {
+      @if (node(); as n) {
+        <div class="component-id">
+          <div class="symbol-tile">
+            <app-component-symbol [type]="n.data.componentType" />
+          </div>
+          <div class="id-text">
+            <span class="h9 ref">{{ n.data.reference }}</span>
+            <span class="p11 type">{{ typeLabel() }}</span>
+          </div>
+        </div>
+      } @else {
+        <span id="properties-sidebar-title" class="h7 title">Properties</span>
+      }
+    }
+    <button
+      class="panel-toggle"
+      type="button"
+      (click)="onToggle()"
+      [attr.aria-expanded]="isExpanded()"
+      aria-label="Toggle properties panel"
+    >
+      <span class="icon icon-panel"></span>
+    </button>
+  </header>
+
+  @if (isExpanded()) {
+    <div class="separator"></div>
+    <div class="content">
+      @switch (state()) {
+        @case ('single') {
+          @if (node(); as n) {
+            <section class="group">
+              <h3 class="h10 group-title">General information</h3>
+              <app-form-field label="Name" fieldId="prop-name">
+                <input
+                  id="prop-name"
+                  class="field p10"
+                  type="text"
+                  [value]="n.data.reference"
+                  (input)="onName($event)"
+                />
+              </app-form-field>
+              <app-form-field label="Description" fieldId="prop-description">
+                <textarea
+                  id="prop-description"
+                  class="field textarea p10"
+                  rows="3"
+                  placeholder="Add details about specs, usage, or footprint…"
+                  [value]="n.data.description"
+                  (input)="onDescription($event)"
+                ></textarea>
+              </app-form-field>
+            </section>
+
+            <section class="group">
+              <h3 class="h10 group-title">Specification</h3>
+              <app-form-field label="Type" fieldId="prop-type">
+                <input
+                  id="prop-type"
+                  class="field p10"
+                  type="text"
+                  [value]="typeLabel()"
+                  readonly
+                />
+              </app-form-field>
+              @for (row of specRows(); track row.key) {
+                <app-form-field [label]="row.label" [fieldId]="'prop-' + row.key">
+                  <input
+                    [id]="'prop-' + row.key"
+                    class="field p10"
+                    type="text"
+                    [value]="row.value"
+                    (input)="onSpec(row.key, $event)"
+                  />
+                </app-form-field>
+              }
+            </section>
+
+            <div class="actions">
+              <button class="remove-button p10" type="button" (click)="onRemove()">
+                Remove component
+              </button>
+            </div>
+          }
+        }
+        @case ('empty') {
+          <app-sidebar-placeholder
+            title="No selection"
+            description="Select a component on the canvas to view and edit its properties."
+          />
+        }
+        @default {
+          <app-sidebar-placeholder
+            title="Multiple components selected"
+            description="Select a single component to edit its properties."
+          />
+        }
+      }
+    </div>
+  }
+</aside>

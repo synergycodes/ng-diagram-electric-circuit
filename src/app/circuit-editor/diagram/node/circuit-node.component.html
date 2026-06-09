@@ -1,0 +1,32 @@
+<div class="selection-box" [style.inset]="selectionInset()"></div>
+
+<span class="reference p10" [style.transform]="labelTransform()">{{ data().reference }}</span>
+
+@if (showValueAbove()) {
+  <span class="value value-above p11" [style.transform]="labelTransform()">{{ data().value }}</span>
+}
+
+<div class="symbol-box" [style.width]="symbolStyle().width" [style.height]="symbolStyle().height">
+  <div class="symbol-art">
+    <app-component-symbol [type]="data().componentType" [stretch]="true" />
+  </div>
+
+  @for (port of portViews(); track port.id) {
+    <ng-diagram-port
+      class="port"
+      [class.connected]="port.connected"
+      [id]="port.id"
+      type="both"
+      [side]="port.side"
+      [style.left]="port.left"
+      [style.top]="port.top"
+    />
+  }
+</div>
+
+@if (showValueBelow()) {
+  <span class="value p11" [style.transform]="labelTransform()">{{ data().value }}</span>
+}
+
+<!-- Rotation handle (shown by ng-diagram when the node is selected & rotatable). -->
+<ng-diagram-node-rotate-adornment />

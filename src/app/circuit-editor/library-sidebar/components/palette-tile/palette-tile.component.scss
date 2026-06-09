@@ -1,0 +1,69 @@
+:host {
+  display: block;
+}
+
+ng-diagram-palette-item {
+  display: block;
+  cursor: grab;
+}
+
+ng-diagram-palette-item:active {
+  cursor: grabbing;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 76px;
+  padding: 10px 8px 8px;
+  border: 1px solid var(--ce-input-stroke);
+  border-radius: 8px;
+  background: var(--ce-bg-tile);
+  color: var(--ce-text-primary);
+  transition:
+    border-color 0.12s ease,
+    background-color 0.12s ease;
+}
+
+ng-diagram-palette-item:hover .tile {
+  background: var(--ce-node-hover-bg);
+}
+
+ng-diagram-palette-item:active .tile {
+  border-color: var(--ce-orange);
+}
+
+.tile-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 30px;
+}
+
+/* Symbol drawing area mirrors the design's 80×30 frame. */
+.tile-symbol app-component-symbol {
+  display: block;
+  width: 80px;
+  height: 30px;
+}
+
+.tile-label {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--ce-text-primary);
+  text-align: center;
+}
+
+.preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 44px;
+  color: var(--ce-text-primary);
+}
