@@ -1,8 +1,7 @@
 import {
   ApplicationConfig,
   ErrorHandler,
-  provideBrowserGlobalErrorListeners,
-  provideZonelessChangeDetection,
+  provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
 import {
   provideRouter,
@@ -16,8 +15,7 @@ import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZonelessChangeDetection(),
-    provideBrowserGlobalErrorListeners(),
+    provideExperimentalZonelessChangeDetection(),
     { provide: ErrorHandler, useClass: AppErrorHandler },
     provideRouter(
       routes,
