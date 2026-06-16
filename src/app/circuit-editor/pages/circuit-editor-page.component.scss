@@ -1,0 +1,54 @@
+:host {
+  position: relative;
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.ui-overlay {
+  position: absolute;
+  inset: 0;
+  padding: 16px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Top bar spans the full width. */
+.top-navbar {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  pointer-events: auto;
+}
+
+/* Left component library, full height below the navbar. Pointer events are
+   handled by the inner panel so the empty area stays click-through. */
+.library {
+  position: absolute;
+  top: 88px;
+  left: 16px;
+  bottom: 16px;
+}
+
+/* Right properties panel, full height below the navbar. */
+.properties {
+  position: absolute;
+  top: 88px;
+  right: 16px;
+  bottom: 16px;
+}
+
+/* Zoom + minimap float bottom-right and slide left when the properties panel
+   expands so they stay clear of it. */
+.minimap {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  pointer-events: auto;
+  transition: right 0.2s ease;
+}
+
+:host(.props-expanded) .minimap {
+  right: 348px;
+}

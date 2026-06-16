@@ -1,0 +1,58 @@
+:host {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.branch-overlay__layer {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+/* Same indicator as the link-drop preview, but interactive: it's the handle you
+   drag to start a branch from the wire. */
+.branch-overlay__ghost-junction {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ce-bg-canvas);
+  border: 1.75px dashed var(--ce-orange);
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  cursor: crosshair;
+  touch-action: none;
+  animation: branch-overlay-pulse 1.4s ease-in-out infinite;
+}
+
+/* Enlarged invisible hit area so the handle is easy to grab. */
+.branch-overlay__ghost-junction::before {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+}
+
+/* Target marker shown on the wire a dragged branch would drop onto — purely
+   visual, never a grab target. */
+.branch-overlay__ghost-junction--target {
+  pointer-events: none;
+  cursor: default;
+}
+
+/* Composited pulse: opacity + transform only (no paint-triggering box-shadow).
+   Keeps the centring translate so the handle stays anchored on the wire. */
+@keyframes branch-overlay-pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}

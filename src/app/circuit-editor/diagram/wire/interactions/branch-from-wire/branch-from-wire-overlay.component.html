@@ -1,0 +1,21 @@
+<div class="branch-overlay__layer" [style.transform]="transform()">
+  @if (hoverHit(); as hit) {
+    <span
+      class="branch-overlay__ghost-junction"
+      [style.left.px]="hit.snapPoint.x"
+      [style.top.px]="hit.snapPoint.y"
+      (pointerdown)="onPointerDown($event)"
+      aria-hidden="true"
+    ></span>
+  }
+
+  <!-- Target indicator while dragging a branch onto another wire. -->
+  @if (targetHit(); as p) {
+    <span
+      class="branch-overlay__ghost-junction branch-overlay__ghost-junction--target"
+      [style.left.px]="p.x"
+      [style.top.px]="p.y"
+      aria-hidden="true"
+    ></span>
+  }
+</div>

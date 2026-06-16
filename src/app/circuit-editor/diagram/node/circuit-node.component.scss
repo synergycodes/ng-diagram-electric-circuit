@@ -1,0 +1,104 @@
+:host {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  /* Deterministic stack from the top (no centering / gaps): the reference and
+     value rows have fixed, grid-multiple heights so the symbol box always lands
+     at a grid-aligned offset — that keeps every port on the grid for clean
+     orthogonal wiring. Row heights mirror REF_ROW_HEIGHT / VALUE_ROW_HEIGHT. */
+  justify-content: flex-start;
+  color: var(--ce-symbol);
+}
+
+:host(.selected) .symbol-box {
+  color: var(--ce-symbol-selected);
+}
+
+/* Hover / selected outline. Wraps the whole node (labels included) and runs
+   through the middle of the ports on bare port sides (inset is bound inline).
+   Absolutely positioned, so it never affects measured size or port placement. */
+.selection-box {
+  position: absolute;
+  border-radius: 10px;
+  border: 1.5px solid transparent;
+  background: transparent;
+  transition:
+    background-color 0.12s ease,
+    border-color 0.12s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+:host(:hover) .selection-box {
+  background: var(--ce-node-hover-bg);
+}
+
+:host(.selected) .selection-box {
+  background: var(--ce-node-selected-bg);
+  border-color: var(--ce-selected-border);
+}
+
+.reference {
+  display: flex;
+  position: relative;
+  z-index: 1;
+  height: 24px; /* REF_ROW_HEIGHT */
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  color: var(--ce-text-primary);
+  white-space: nowrap;
+  text-align: center;
+}
+
+.value {
+  display: flex;
+  position: relative;
+  z-index: 1;
+  height: 16px; /* VALUE_ROW_HEIGHT */
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  color: var(--ce-text-tertiary);
+  white-space: nowrap;
+  text-align: center;
+}
+
+.symbol-box {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  color: var(--ce-symbol);
+}
+
+/* The drawn symbol sits above the selection outline. */
+.symbol-art {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.port {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  /* Dots are hidden until the node is hovered or selected. */
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+:host(:hover) .port:not(.connected),
+:host(.selected) .port:not(.connected) {
+  opacity: 1;
+}
+
+/* A port that already holds a wire stays hidden and non-interactive, so it
+   never highlights on hover/selection and can't start a second connection. */
+.port.connected {
+  opacity: 0;
+  pointer-events: none;
+}

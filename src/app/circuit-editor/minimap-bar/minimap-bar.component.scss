@@ -1,0 +1,117 @@
+:host {
+  position: relative;
+  display: block;
+  pointer-events: auto;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 56px;
+  padding: 0 8px;
+  border: 1px solid var(--ce-separator);
+  border-radius: 12px;
+  background: var(--ce-bg-panel);
+  box-shadow: var(--ce-elevation-popover);
+}
+
+.step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ce-text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: var(--ce-bg-icon);
+    color: var(--ce-text-primary);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+.zoom-level {
+  min-width: 46px;
+  text-align: center;
+  color: var(--ce-text-primary);
+  user-select: none;
+}
+
+.divider {
+  width: 1px;
+  height: 22px;
+  margin: 0 2px;
+  background: var(--ce-separator);
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ce-text-secondary);
+  cursor: pointer;
+
+  &:hover,
+  &.active {
+    background: var(--ce-bg-icon);
+    color: var(--ce-text-primary);
+  }
+}
+
+.minimap-popover {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  width: 240px;
+  height: 160px;
+  overflow: hidden;
+  border: 1px solid var(--ce-separator);
+  border-radius: 12px;
+  background: var(--ce-bg-panel);
+  box-shadow: var(--ce-elevation-popover);
+
+  ng-diagram-minimap {
+    position: static;
+    display: block;
+    width: 100%;
+    height: 100%;
+    --ngd-minimap-background: transparent;
+    --ngd-minimap-border-color: transparent;
+    --ngd-minimap-shadow-color: transparent;
+    --ngd-minimap-border-radius: 0;
+    --ngd-minimap-margin: 0;
+  }
+}
+
+.icon {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-color: currentColor;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+
+.icon-map {
+  mask-image: url('../../../assets/map-trifold.svg');
+  -webkit-mask-image: url('../../../assets/map-trifold.svg');
+}

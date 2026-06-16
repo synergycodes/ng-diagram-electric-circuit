@@ -1,0 +1,19 @@
+:host {
+  display: contents;
+}
+
+/* This is a custom-template edge, so it never receives ng-diagram's
+   `.default-edge` class — the built-in hover/selected stroke tokens don't apply.
+   Drive `--edge-stroke` here instead; the CSS variable cascades into the base
+   edge's <path>. Selected & hover both use the primary orange accent. */
+ng-diagram-base-edge {
+  --edge-stroke: var(--ce-wire);
+}
+
+ng-diagram-base-edge:hover:not(.selected):not(.temporary) {
+  --edge-stroke: var(--ce-orange);
+}
+
+ng-diagram-base-edge.selected {
+  --edge-stroke: var(--ce-orange);
+}

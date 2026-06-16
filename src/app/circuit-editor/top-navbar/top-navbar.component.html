@@ -1,0 +1,37 @@
+<nav class="top-navbar">
+  <div class="left-wrap">
+    <a class="menu-trigger" href="https://www.ngdiagram.dev/" aria-label="ng-diagram home">
+      <img src="assets/ngd-logo.svg" alt="ngD logo" />
+    </a>
+    <span class="divider" aria-hidden="true"></span>
+    <span class="app-name h10">Circuit Editor</span>
+    <span class="divider" aria-hidden="true"></span>
+    @if (editing()) {
+      <input
+        #nameInput
+        type="text"
+        class="project-name-input p10"
+        [value]="projectName.name()"
+        maxlength="80"
+        aria-label="Project name"
+        (keydown.enter)="nameInput.blur()"
+        (keydown.escape)="cancelEdit(nameInput)"
+        (blur)="commit(nameInput.value)"
+      />
+    } @else {
+      <span
+        class="project-name p10"
+        role="button"
+        tabindex="0"
+        title="Click to rename"
+        (click)="startEdit()"
+        (keydown.enter)="startEdit()"
+        >{{ projectName.name() }}</span
+      >
+    }
+  </div>
+  <div class="right-wrap">
+    <app-export-menu />
+    <app-theme-toggle />
+  </div>
+</nav>

@@ -1,0 +1,117 @@
+/**
+ * Circuit Editor design tokens.
+ *
+ * Colors come from the Figma color sheets ("Color palette" 611:416682,
+ * "01 — Color Palette" 406:246774). The base ng-diagram `--ngd-*` tokens ship
+ * with the library (ng-diagram/styles.css); this file adds the circuit `--ce-*`
+ * tokens and remaps the few `--ngd-*` variables that drive the on-canvas look.
+ *
+ * Theme strategy: the DARK theme is the `:root` default so every token always
+ * resolves even if the `data-theme` attribute is missing or the bootstrap
+ * script does not run. `html[data-theme='light']` is the only override block.
+ */
+
+:root {
+  /* Brand — identical in both themes */
+  --ce-orange: #ff8c42; /* primary accent: buttons, active tabs, selection */
+  --ce-orange-hover: #e97c35; /* primary button hover */
+  --ce-violet: #a855f7; /* decorative ring around connection ports */
+  --ce-text-on-orange: #2a1505; /* text/icon on an orange surface */
+
+  --ce-symbol-selected: var(--ce-orange); /* symbol stroke when selected */
+  --ce-symbol-stroke-width: 1.75; /* schematic line weight */
+
+  /* Radius scale */
+  --ce-radius-sm: 6px;
+
+  /* Motion */
+  --ce-duration-fast: 0.12s;
+  --ce-ease: ease;
+
+  /* Focus ring (built from the brand accent) */
+  --ce-focus-ring: var(--ce-orange);
+
+  /* ---- DARK theme (default) ---- */
+
+  /* Surfaces (purple ramp) */
+  --ce-bg-screen: #0f0a1f; /* outermost editor screen */
+  --ce-bg-canvas: #0b0718; /* Purple 1 — diagram canvas */
+  --ce-bg-panel: #201c2d; /* Purple 3 — navbar, toolbar, side panels */
+  --ce-bg-tile: #252033; /* Purple 4 — library tile / empty-state circle */
+  --ce-bg-icon: #252033; /* Purple 4 — icon button background */
+  --ce-bg-input: #1d1929; /* Purple 2 — input, textarea, search box */
+
+  /* Lines */
+  --ce-separator: #322650; /* dividers, panel outlines */
+  --ce-input-stroke: #413759; /* Purple 6 — input / tile border (orange on focus) */
+  --ce-selected-border: #6b6389; /* Purple 7 — selected node outline */
+
+  /* Text */
+  --ce-text-primary: #e8e4f0; /* headings, body, node symbols + labels */
+  --ce-text-secondary: #d5d8e0; /* section titles, field labels */
+  --ce-text-tertiary: #6f7480; /* placeholders, pin numbers */
+
+  /* Status */
+  --ce-danger: #ff6b6b; /* destructive action (remove / delete) */
+
+  /* Derived */
+  --ce-symbol: var(--ce-text-primary);
+  --ce-wire: #ffffff80; /* white 50% — diagram edges */
+  --ce-node-hover-bg: #ffffff0d; /* white 5% — symbol hover tile */
+  --ce-node-selected-bg: #6b638926;
+  --ce-grid-minor: #261f44; /* minor grid lines */
+  --ce-grid-major: #4a3d6e; /* stronger line every 10 cells */
+  --ce-shadow: #00000080;
+
+  /* Elevation (depends on the theme-specific --ce-shadow above) */
+  --ce-elevation-panel: 0 8px 16px -4px var(--ce-shadow);
+  --ce-elevation-popover: 0 12px 32px var(--ce-shadow);
+
+  /* ng-diagram canvas remap */
+  --ngd-diagram-background-color: var(--ce-bg-canvas);
+  --ngd-background-line-minor-color: var(--ce-grid-minor);
+  --ngd-background-line-major-color: var(--ce-grid-major);
+  --ngd-node-port-stroke-default: var(--ce-violet);
+  --ngd-node-port-fill-default: var(--ce-bg-canvas);
+  --ngd-node-port-stroke-active: var(--ce-orange);
+  --ngd-node-port-fill-active: var(--ce-orange);
+  /* Base wire colour (fallback for --edge-stroke); hover/selected recolouring
+     lives in wire.component.scss since custom-template edges lack .default-edge. */
+  --ngd-default-edge-stroke: var(--ce-wire);
+  --ngd-focus-ring-node-active: transparent;
+}
+
+html[data-theme='light'] {
+  /* Surfaces */
+  --ce-bg-screen: #f4f3f7;
+  --ce-bg-canvas: #ffffff;
+  --ce-bg-panel: #ffffff;
+  --ce-bg-tile: #f7f6fa;
+  --ce-bg-icon: #f0eef6;
+  --ce-bg-input: #f8f7fb;
+
+  /* Lines */
+  --ce-separator: #e2e0e8;
+  --ce-input-stroke: #cfcdd8;
+  --ce-selected-border: #a855f7;
+
+  /* Text */
+  --ce-text-primary: #15112b;
+  --ce-text-secondary: #636078;
+  --ce-text-tertiary: #9492a8;
+
+  /* Status (tuned for contrast on white) */
+  --ce-danger: #d92d2d;
+
+  /* Derived */
+  --ce-symbol: var(--ce-text-primary);
+  --ce-wire: #15112b66;
+  --ce-node-hover-bg: #15112b0a;
+  --ce-node-selected-bg: #a855f714;
+  --ce-grid-minor: #e7e4ef; /* minor grid lines */
+  --ce-grid-major: #cfcbe0; /* stronger line every 10 cells */
+  --ce-shadow: #15112b1f;
+
+  /* The --ngd-* remaps in :root reference these --ce-* vars, so overriding the
+     --ce-* values above is enough; no --ngd-* re-declaration needed here. */
+}
