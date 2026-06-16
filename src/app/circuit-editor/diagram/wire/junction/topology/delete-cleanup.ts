@@ -1,8 +1,8 @@
 // Post-delete junction maintenance: demote orphans, drop empties, merge halves.
 
 import type { NgDiagramModelService, NgDiagramService, Node, Point } from 'ng-diagram';
-import { JUNCTION_NODE_TYPE, junctionCentre } from './junction-model';
-import { reconcileJunctions } from './junction-cleanup';
+import { JUNCTION_NODE_TYPE, junctionCentre } from '../model';
+import { reconcileJunctions } from './cleanup';
 
 interface DeleteCleanupDeps {
   readonly modelService: NgDiagramModelService;

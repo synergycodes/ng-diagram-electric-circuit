@@ -13,18 +13,10 @@ import {
   NgDiagramViewportService,
   type Point,
 } from 'ng-diagram';
-import { GRID_UNIT } from '../model/component-catalog';
-import { findEdgeSplitHit, type EdgeSplitHit } from './geometry';
-import { JUNCTION_SIZE_PX } from './junction-model';
-import { PointerDragController } from './pointer-drag-controller';
-import { JunctionTopologyService } from './junction-topology.service';
-
-// Drag distance before a press on the indicator becomes a branch (vs a click
-// that just selects the wire).
-const BRANCH_THRESHOLD_PX = 4;
-
-/** Cursor-to-port snap distance — mirrors ng-diagram's default link snap. */
-const PORT_SNAP_PX = GRID_UNIT * 2;
+import { findEdgeSplitHit, type EdgeSplitHit } from '../../geometry';
+import { PointerDragController } from '../../pointer-drag-controller';
+import { JUNCTION_SIZE_PX, JunctionTopologyService } from '../../junction';
+import { BRANCH_THRESHOLD_PX, HIT_TOLERANCE_PX, PORT_SNAP_PX, SNAP_GRID_PX } from './config';
 
 interface BranchDragState {
   readonly edgeId: string;
@@ -91,7 +83,7 @@ export class BranchFromWireOverlayComponent {
     if (this.ngDiagramService.actionState().linking) return null;
     const cursor = this.cursorWorld();
     if (!cursor) return null;
-    const hit = findEdgeSplitHit(this.modelService.edges(), cursor, GRID_UNIT, GRID_UNIT);
+    const hit = findEdgeSplitHit(this.modelService.edges(), cursor, HIT_TOLERANCE_PX, SNAP_GRID_PX);
     if (!hit) return null;
     if (this.selectionService.selection().edges.some((edge) => edge.id === hit.edge.id)) {
       return null;
@@ -120,8 +112,8 @@ export class BranchFromWireOverlayComponent {
     const hit = findEdgeSplitHit(
       this.modelService.edges().filter((edge) => !exclude.has(edge.id)),
       cursor,
-      GRID_UNIT,
-      GRID_UNIT,
+      HIT_TOLERANCE_PX,
+      SNAP_GRID_PX,
     );
     return hit?.snapPoint ?? null;
   });

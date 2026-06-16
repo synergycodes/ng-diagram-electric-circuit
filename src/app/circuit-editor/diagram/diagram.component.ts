@@ -23,15 +23,18 @@ import { CIRCUIT_EDITOR_CONFIG } from '../circuit-editor.config';
 import { ContextMenuService } from '../context-menu/context-menu.service';
 import { PropertiesSidebarService } from '../properties-sidebar/properties-sidebar.service';
 import { diagramModel } from './data';
-import { applyDeleteCleanup } from './junction/delete-cleanup';
-import { applyEdgeStretchOnSelectionMoved } from './junction/edge-stretch';
-import { BranchFromWireOverlayComponent } from './junction/branch-from-wire-overlay.component';
-import { EdgeReshapeOverlayComponent } from './junction/edge-reshape-overlay.component';
-import { JunctionNodeComponent } from './junction/junction-node.component';
-import { JUNCTION_NODE_TYPE, JUNCTION_SIZE_PX } from './junction/junction-model';
-import { createJunctionPortRoutingMiddleware } from './junction/junction-port-routing.middleware';
-import { JunctionTopologyService } from './junction/junction-topology.service';
-import { LinkDropPreviewOverlayComponent } from './junction/link-drop-preview-overlay.component';
+import {
+  applyDeleteCleanup,
+  createJunctionPortRoutingMiddleware,
+  JunctionNodeComponent,
+  JunctionTopologyService,
+  JUNCTION_NODE_TYPE,
+  JUNCTION_SIZE_PX,
+} from './wire/junction';
+import { applyEdgeStretchOnSelectionMoved } from './wire/interactions/stretch';
+import { BranchFromWireOverlayComponent } from './wire/interactions/branch-from-wire';
+import { EdgeReshapeOverlayComponent } from './wire/interactions/reshape';
+import { LinkDropPreviewOverlayComponent } from './wire/interactions/link-drop-preview';
 import { COMPONENT_CATALOG, GRID_UNIT, isAutoNumbered } from './model/component-catalog';
 import { CIRCUIT_NODE_TYPE, WIRE_EDGE_TYPE, type CircuitNodeData } from './model/component-types';
 import { ConnectivityService } from './model/connectivity.service';

@@ -3,7 +3,7 @@
 // wire should leave from.
 
 import { NgDiagramModelService, type Edge, type Node, type Point, type Port } from 'ng-diagram';
-import { endpointWorldPosition } from './junction-cleanup';
+import { endpointWorldPosition } from './topology/cleanup';
 import {
   JUNCTION_NODE_TYPE,
   JUNCTION_PORT_IDS,
@@ -11,7 +11,7 @@ import {
   pickBranchJunctionPortId,
   type JunctionNodeData,
   type JunctionPortId,
-} from './junction-model';
+} from './model';
 
 export function junctionWorldCentre(junction: Node): Point {
   const size = junction.size ?? { width: JUNCTION_SIZE_PX, height: JUNCTION_SIZE_PX };

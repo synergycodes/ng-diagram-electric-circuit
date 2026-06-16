@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
 
-**Live demo:** https://synergycodes.github.io/ng-diagram-electric-circut/
+**Live demo:** https://synergycodes.github.io/ng-diagram-electric-circuit/
 
 Interactive circuit / schematic editor built with Angular 21 and [ng-diagram](https://www.npmjs.com/package/ng-diagram). Use this project as a starting point for building your own schematic capture tool, node-based editor, or component-library-driven diagram. Lean dependencies: Angular, ng-diagram, and [html-to-image](https://www.npmjs.com/package/html-to-image) (for JPEG export) — no opinionated third-party UI libraries.
 
@@ -11,25 +11,24 @@ Features:
 - Drag-and-drop component placement from a searchable, categorized library palette
 - A data-driven component catalog (resistor, capacitor, inductor, potentiometer, fuse, crystal, diode, LED, Zener, NPN/PNP transistors, NE555, switch, push button, battery, +5V, ground) rendered as crisp inline SVG
 - Free-form canvas: move, select, rotate, and wire components port-to-port
+- **Orthogonal wire editing** — reshape wires by dragging their segments, with grid snapping and port-anchored ends
+- **Wire junctions (link-to-link)** — drop or drag a wire onto another to create a solder-dot junction; branch from a wire, with junction port routing, merge-on-delete, and cleanup of orphaned junctions
 - Right-click **context menus** — copy / cut / paste / delete / rotate ±90° on a node, paste on the background
-- **Export** dropdown: JPEG snapshot of the canvas, or JSON (components + connections)
+- **Export** dropdown: editable SVG, JPEG snapshot of the canvas, or JSON (components + connections)
 - Properties sidebar with per-component-type specification fields (diagram-to-UI integration)
 - Minimap and zoom controls; full-height library / properties rails
 - Dark / light theme matching a dedicated design token system
 - Unique reference designators (R1, R2, C1…) auto-assigned on drop
 
-> **Note on wires:** basic port-to-port connections are supported. Link-to-link
-> (wire junction) connections are intentionally out of scope in this template and
-> are expected to be added later.
-
 ## Component library
 
-| Category            | Components               |
-| ------------------- | ------------------------ |
-| Passive             | Resistor, Capacitor      |
-| Semiconductors      | Diode, LED               |
-| Integrated circuits | NE555                    |
-| Power & Ground      | Battery, +5V source, GND |
+| Category            | Components                                                  |
+| ------------------- | ----------------------------------------------------------- |
+| Passive             | Resistor, Capacitor, Inductor, Potentiometer, Fuse, Crystal |
+| Semiconductors      | Diode, LED, Zener diode, NPN transistor, PNP transistor     |
+| Integrated circuits | NE555                                                       |
+| Electromechanical   | Switch, Push button                                         |
+| Power & Ground      | Battery, +5V source, GND                                    |
 
 The library is fully **data-driven**: every component is one entry in
 [`component-catalog.ts`](src/app/circuit-editor/diagram/model/component-catalog.ts)
@@ -62,19 +61,22 @@ Open http://localhost:4200.
 
 ## ng-diagram APIs demonstrated
 
-| Concern             | API                                                                                    |
-| ------------------- | -------------------------------------------------------------------------------------- |
-| Bootstrap           | `provideNgDiagram()`                                                                   |
-| Diagram surface     | `<ng-diagram>`, `<ng-diagram-background>`                                              |
-| Node template       | `NgDiagramNodeTemplate`, `NgDiagramNodeTemplateMap`                                    |
-| Edge template       | `NgDiagramEdgeTemplate`, `NgDiagramEdgeTemplateMap`, `NgDiagramBaseEdgeComponent`      |
-| Ports               | `<ng-diagram-port>`                                                                    |
-| Palette (drag/drop) | `<ng-diagram-palette-item>`, `<ng-diagram-palette-item-preview>`, `paletteItemDropped` |
-| Minimap             | `<ng-diagram-minimap>`                                                                 |
-| Model               | `initializeModel()`, `NgDiagramModelService`                                           |
-| Selection           | `NgDiagramSelectionService`                                                            |
-| Viewport            | `NgDiagramViewportService` (`zoomToFit`, `zoom`, `scale`)                              |
-| Linking config      | `NgDiagramConfig.linking.finalEdgeDataBuilder`                                         |
+| Concern             | API                                                                                     |
+| ------------------- | --------------------------------------------------------------------------------------- |
+| Bootstrap           | `provideNgDiagram()`                                                                    |
+| Diagram surface     | `<ng-diagram>`, `<ng-diagram-background>`                                               |
+| Node template       | `NgDiagramNodeTemplate`, `NgDiagramNodeTemplateMap`                                     |
+| Edge template       | `NgDiagramEdgeTemplate`, `NgDiagramEdgeTemplateMap`, `NgDiagramBaseEdgeComponent`       |
+| Ports               | `<ng-diagram-port>`                                                                     |
+| Palette (drag/drop) | `<ng-diagram-palette-item>`, `<ng-diagram-palette-item-preview>`, `paletteItemDropped`  |
+| Minimap             | `<ng-diagram-minimap>`                                                                  |
+| Model               | `initializeModel()`, `NgDiagramModelService`                                            |
+| Selection           | `NgDiagramSelectionService`                                                             |
+| Viewport            | `NgDiagramViewportService` (`zoomToFit`, `zoom`, `scale`)                               |
+| Linking config      | `NgDiagramConfig.linking` (`validateConnection`, `finalEdgeDataBuilder`)                |
+| Edge routing        | `NgDiagramConfig.edgeRouting` (orthogonal) + `routingMode: 'manual'` for reshaped wires |
+| Middleware          | `createMiddlewares()` — custom junction port-routing middleware                         |
+| Events              | `diagramInit`, `edgeDrawEnded`, `selectionMoved`, `selectionRemoved`                    |
 
 ## Architecture
 
@@ -87,18 +89,23 @@ src/
     ├── pages/                         # page shell: canvas + overlays
     ├── diagram/
     │   ├── diagram.component.*        # ng-diagram host, template maps, palette-drop
-    │   ├── wire.component.ts          # edge (wire) template
     │   ├── data.ts                    # seed example circuit
     │   ├── editor-actions.service.ts  # clipboard / delete / rotate (context-menu actions)
-    │   ├── model/                     # ComponentType, CircuitNodeData, catalog, guards
-    │   └── node/
-    │       ├── circuit-node.component.* # one template for every component
-    │       └── symbols/               # inline-SVG schematic symbols
+    │   ├── model/                     # ComponentType, CircuitNodeData, catalog, guards, connectivity
+    │   ├── node/
+    │   │   ├── circuit-node.component.* # one template for every component
+    │   │   └── symbols/               # inline-SVG schematic symbols
+    │   └── wire/                      # everything about wires/links
+    │       ├── wire.component.*        # edge (wire) template
+    │       ├── geometry/              # pure orthogonal-polyline math + hit testing
+    │       ├── pointer-drag-controller.ts # shared gesture plumbing
+    │       ├── junction/              # solder-dot node + topology/ + routing/
+    │       └── interactions/          # reshape, stretch, branch-from-wire, link-drop-preview
     ├── library-sidebar/               # searchable component palette
     ├── properties-sidebar/            # selection-driven properties form
     ├── minimap-bar/                   # bottom-right zoom + collapsible minimap
     ├── context-menu/                  # node & background right-click menus
-    ├── export/                        # JPEG + JSON export (service + dropdown)
+    ├── export/                        # SVG + JPEG + JSON export (service + dropdown)
     └── top-navbar/                    # logo, filename, export, theme toggle
 ```
 
@@ -118,28 +125,29 @@ white-50% wire stroke.
   `ComponentSymbolComponent`. The palette tile, on-canvas node, and properties
   form pick it up automatically.
 - **Change the seed circuit:** edit [`data.ts`](src/app/circuit-editor/diagram/data.ts).
-- **Tune the viewport:** edit `CIRCUIT_EDITOR_DEFAULTS` or pass
-  `provideCircuitEditorConfig({ … })` in the page providers.
+- **Tune the viewport:** edit `CIRCUIT_EDITOR_DEFAULTS` (zoom-to-fit padding,
+  zoom step) in [`circuit-editor.config.ts`](src/app/circuit-editor/circuit-editor.config.ts),
+  or override the `CIRCUIT_EDITOR_CONFIG` token in the page providers.
 - **Theme:** adjust the `--ce-*` tokens in `circuit-theme.css`.
 
 ## Export format
 
-JSON export ([`export.service.ts`](src/app/circuit-editor/export/export.service.ts))
-emits a documented `ng-diagram-circuit` document — a `components` array (type,
-reference, value, specs, position, rotation) plus a `connections` array
-(port-to-port). The connectivity standard for circuits is a **SPICE netlist**,
-but these generic illustrative components don't map cleanly to SPICE device
-cards, so a clean JSON format is used instead.
+[`export.service.ts`](src/app/circuit-editor/export/export.service.ts) offers
+three formats: an **editable SVG** (vector schematic built from the model,
+black-on-white for print), a **JPEG** raster snapshot of the canvas, and
+**JSON**. The JSON is a documented `ng-diagram-circuit` document — a `components`
+array (type, reference, value, specs, position, rotation) plus a `connections`
+array (port-to-port). The connectivity standard for circuits is a **SPICE
+netlist**, but these generic illustrative components don't map cleanly to SPICE
+device cards, so a clean JSON format is used instead.
 
 ## Known limitations / notes
 
-- **Wire junctions (link-to-link):** not implemented — reserved for a later feature.
 - **NE555 footprint:** the symbol follows the design's stylized **14-pin DIP**
   drawing rather than the real 8-pin DIP-8 package.
-- **Bridge rectifier / composite components:** the catalog ships the eight
-  primitive components shown in the design. The bridge-rectifier composite from
-  the symbol sheet is left out as it is an assembly of diodes plus internal
-  wiring rather than a single primitive.
+- **Composite components:** the catalog ships single-primitive components only.
+  Composite parts (e.g. a bridge rectifier — an assembly of diodes plus internal
+  wiring) are out of scope, since each catalog entry maps to one schematic symbol.
 
 ## Tech stack
 

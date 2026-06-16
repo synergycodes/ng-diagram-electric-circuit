@@ -24,7 +24,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build -- --base-href /templates/electric-circut/
+        run: npm run build -- --base-href /templates/electric-circuit/
 
       - name: Azure login (OIDC)
         uses: azure/login@v2
@@ -41,7 +41,7 @@ jobs:
             az storage blob delete-batch \
               --account-name "${{ vars.AZURE_STORAGE_ACCOUNT }}" \
               --source '${{ vars.AZURE_STORAGE_CONTAINER }}' \
-              --pattern 'electric-circut/*' \
+              --pattern 'electric-circuit/*' \
               --auth-mode login
 
       - name: Upload to blob container
@@ -52,7 +52,7 @@ jobs:
             az storage blob upload-batch \
               --account-name "${{ vars.AZURE_STORAGE_ACCOUNT }}" \
               --destination '${{ vars.AZURE_STORAGE_CONTAINER }}' \
-              --destination-path 'electric-circut' \
+              --destination-path 'electric-circuit' \
               --source ./dist/ng-diagram-circuit-editor/browser \
               --overwrite true \
               --auth-mode login

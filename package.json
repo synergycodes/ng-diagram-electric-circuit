@@ -1,5 +1,5 @@
 {
-  "name": "ng-diagram-electric-circut",
+  "name": "ng-diagram-electric-circuit",
   "version": "1.0.0",
   "description": "Interactive circuit / schematic editor template built with Angular and ng-diagram",
   "license": "MIT",
@@ -20,9 +20,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/synergycodes/ng-diagram-electric-circut.git"
+    "url": "https://github.com/synergycodes/ng-diagram-electric-circuit.git"
   },
-  "homepage": "https://github.com/synergycodes/ng-diagram-electric-circut#readme",
+  "homepage": "https://github.com/synergycodes/ng-diagram-electric-circuit#readme",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

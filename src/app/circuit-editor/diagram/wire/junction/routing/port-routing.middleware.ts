@@ -1,6 +1,6 @@
 import type { Edge, Middleware, Point } from 'ng-diagram';
-import { JUNCTION_NODE_TYPE, junctionCentre } from './junction-model';
-import { collectBranchesByJunction, reassignJunctionBranches } from './junction-routing';
+import { JUNCTION_NODE_TYPE, junctionCentre } from '../model';
+import { collectBranchesByJunction, reassignJunctionBranches } from './routing';
 
 // Reassign junction-side ports so wires don't leave the junction collinear
 // (visible overlap on the first segment). Idempotent — no patches on a clean

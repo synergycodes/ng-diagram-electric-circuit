@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NgDiagramPortComponent, type NgDiagramNodeTemplate, type Node } from 'ng-diagram';
-import { JUNCTION_PORT_IDS, type JunctionNodeData } from './junction-model';
+import { JUNCTION_PORT_IDS, type JunctionNodeData } from './model';
 
 /**
  * Wire junction — the schematic "solder dot" rendered where one wire is dropped
@@ -19,7 +19,7 @@ import { JUNCTION_PORT_IDS, type JunctionNodeData } from './junction-model';
     <ng-diagram-port class="port bottom" [id]="portIds.bottom" type="both" side="bottom" />
     <ng-diagram-port class="port left" [id]="portIds.left" type="both" side="left" />
   `,
-  styleUrl: './junction-node.component.scss',
+  styleUrl: './node.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.selected]': 'node().selected',

@@ -10,12 +10,8 @@ import {
 import { type CircuitNodeData } from '../diagram/model/component-types';
 import { isCircuitNode, isWireEdge } from '../diagram/model/guards';
 import { ProjectNameService } from '../top-navbar/project-name.service';
-import { portWorldPosition } from '../diagram/junction/geometry';
-import {
-  JUNCTION_SIZE_PX,
-  isJunctionNode,
-  junctionCentre,
-} from '../diagram/junction/junction-model';
+import { portWorldPosition } from '../diagram/wire/geometry';
+import { JUNCTION_SIZE_PX, isJunctionNode, junctionCentre } from '../diagram/wire/junction';
 import { symbolBody } from '../diagram/node/symbols/symbol-shapes';
 
 /** Serialized circuit document: components plus their port-to-port connections. */

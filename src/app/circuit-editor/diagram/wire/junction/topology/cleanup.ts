@@ -3,9 +3,9 @@
 // merge the two halves back into one wire and drop the node; 1 or 3+ -> leave.
 
 import type { Edge, NgDiagramModelService, NgDiagramService, Point } from 'ng-diagram';
-import { WIRE_EDGE_TYPE, type CircuitEdgeData } from '../model/component-types';
-import { POSITION_TOLERANCE_PX, portWorldPosition } from './geometry';
-import { isJunctionNode, mintWireId } from './junction-model';
+import { WIRE_EDGE_TYPE, type CircuitEdgeData } from '../../../model/component-types';
+import { POSITION_TOLERANCE_PX, portWorldPosition } from '../../geometry';
+import { isJunctionNode, mintWireId } from '../model';
 
 // Bbox-centre approximation — good enough to classify a port's direction.
 export function endpointWorldPosition(

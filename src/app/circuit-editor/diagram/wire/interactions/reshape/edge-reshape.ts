@@ -2,7 +2,7 @@
 // recompute a polyline when one segment is dragged perpendicular to its axis.
 
 import type { Point } from 'ng-diagram';
-import { POSITION_TOLERANCE_PX } from './geometry';
+import { POSITION_TOLERANCE_PX } from '../../geometry';
 
 export type EndpointKind = 'port' | 'junction' | 'dangling';
 

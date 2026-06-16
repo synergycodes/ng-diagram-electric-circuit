@@ -13,11 +13,9 @@ import {
   NgDiagramViewportService,
   type Point,
 } from 'ng-diagram';
-import { GRID_UNIT } from '../model/component-catalog';
-import { portWorldPosition } from './geometry';
-import { JUNCTION_NODE_TYPE } from './junction-model';
-import { PointerDragController } from './pointer-drag-controller';
-import { collapseCollinearBends, dropSameAxisBends } from './bend-collapse';
+import { collapseCollinearBends, dropSameAxisBends, portWorldPosition } from '../../geometry';
+import { PointerDragController } from '../../pointer-drag-controller';
+import { JUNCTION_NODE_TYPE } from '../../junction';
 import {
   findReshapeableSegments,
   neighborAxis,
@@ -31,7 +29,8 @@ import {
   findCollinearPartnerSegment,
   junctionEndDelta,
   sharesFormerParent,
-} from './junction-propagation';
+} from './reshape-propagation';
+import { RESHAPE_SNAP_GRID_PX } from './config';
 
 interface HandleDescriptor extends ReshapeSegment {
   readonly edgeId: string;
@@ -198,7 +197,7 @@ export class EdgeReshapeOverlayComponent {
       drag.axis,
       dxWorld,
       dyWorld,
-      GRID_UNIT,
+      RESHAPE_SNAP_GRID_PX,
       drag.anchorPortAtSource,
       drag.anchorPortAtTarget,
     );
@@ -335,7 +334,7 @@ export class EdgeReshapeOverlayComponent {
       drag.axis,
       deltaX,
       deltaY,
-      GRID_UNIT,
+      RESHAPE_SNAP_GRID_PX,
       partnerAnchorPortAtSource,
       partnerAnchorPortAtTarget,
     );

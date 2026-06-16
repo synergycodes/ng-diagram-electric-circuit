@@ -5,11 +5,8 @@ import {
   NgDiagramViewportService,
   type Point,
 } from 'ng-diagram';
-import { GRID_UNIT } from '../model/component-catalog';
-import { findEdgeSplitHit } from './geometry';
-
-// How close the cursor snaps to a port — mirrors ng-diagram's default link snap.
-const PORT_SNAP_PX = GRID_UNIT * 2;
+import { findEdgeSplitHit } from '../../geometry';
+import { HIT_TOLERANCE_PX, PORT_SNAP_PX, SNAP_GRID_PX } from './config';
 
 /**
  * Ghost junction preview shown while a wire is being drawn. When the dragged
@@ -52,7 +49,7 @@ export class LinkDropPreviewOverlayComponent {
     const nearestPort = this.modelService.getNearestPortInRange(cursor, PORT_SNAP_PX);
     if (nearestPort && nearestPort.nodeId !== link.sourceNodeId) return null;
 
-    const hit = findEdgeSplitHit(this.modelService.edges(), cursor, GRID_UNIT, GRID_UNIT);
+    const hit = findEdgeSplitHit(this.modelService.edges(), cursor, HIT_TOLERANCE_PX, SNAP_GRID_PX);
     return hit?.snapPoint ?? null;
   });
 }

@@ -5,10 +5,11 @@
 // bends, inserting an L-bend only when a straight stretch can't stay orthogonal.
 
 import type { Edge, NgDiagramModelService, Point } from 'ng-diagram';
-import { POSITION_TOLERANCE_PX, portWorldPosition } from './geometry';
-import { collapseCollinearBends } from './bend-collapse';
+import { portWorldPosition } from '../../geometry';
+import { collapseCollinearBends } from '../../geometry';
+import { STRETCH_TOLERANCE_PX } from './config';
 
-const TOL = POSITION_TOLERANCE_PX;
+const TOL = STRETCH_TOLERANCE_PX;
 
 // Re-anchor manual edges incident to a moved node to the live port positions.
 // `candidateEdges` is the pre-filtered set of edges incident to the moved nodes

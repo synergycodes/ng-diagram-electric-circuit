@@ -2,8 +2,8 @@
 // two wires from leaving the same junction port collinear (visible overlap).
 
 import type { Edge, Point } from 'ng-diagram';
-import { type CircuitEdgeData } from '../model/component-types';
-import { JUNCTION_PORT_IDS, type JunctionPortId } from './junction-model';
+import { type CircuitEdgeData } from '../../../model/component-types';
+import { JUNCTION_PORT_IDS, type JunctionPortId } from '../model';
 
 export interface BranchEndpoint {
   readonly edgeId: string;

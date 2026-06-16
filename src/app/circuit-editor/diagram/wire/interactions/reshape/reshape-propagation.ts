@@ -4,8 +4,8 @@
 // compute the junction-end delta.
 
 import type { Point } from 'ng-diagram';
-import { type CircuitEdgeData } from '../model/component-types';
-import { POSITION_TOLERANCE_PX, segmentAxis } from './geometry';
+import { type CircuitEdgeData } from '../../../model/component-types';
+import { POSITION_TOLERANCE_PX, segmentAxis } from '../../geometry';
 
 export interface CollinearPartnerInfo {
   readonly partnerJunctionEnd: 'source' | 'target';

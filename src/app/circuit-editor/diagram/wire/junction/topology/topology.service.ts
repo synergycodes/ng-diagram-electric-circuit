@@ -6,16 +6,15 @@ import {
   type Node,
   type Point,
 } from 'ng-diagram';
-import { GRID_UNIT } from '../model/component-catalog';
-import { WIRE_EDGE_TYPE, type CircuitEdgeData } from '../model/component-types';
-import { isCircuitNode, portHasConnection } from '../model/guards';
-import { endpointWorldPosition, mergeJunctionHalves, reconcileJunction } from './junction-cleanup';
+import { WIRE_EDGE_TYPE, type CircuitEdgeData } from '../../../model/component-types';
+import { isCircuitNode, portHasConnection } from '../../../model/guards';
+import { endpointWorldPosition, mergeJunctionHalves, reconcileJunction } from './cleanup';
 import {
   findEdgeSplitHit,
   portWorldPosition,
   splitPolylineAt,
   type EdgeSplitHit,
-} from './geometry';
+} from '../../geometry';
 import {
   JUNCTION_NODE_TYPE,
   JUNCTION_PORT_IDS,
@@ -25,14 +24,15 @@ import {
   mintWireId,
   pickJunctionPortId,
   type JunctionPortId,
-} from './junction-model';
+} from '../model';
 import {
   defaultHalfFallback,
   junctionNodeAt,
   junctionPortWorld,
   junctionWorldCentre,
   pickBranchPortAvoidingHalves,
-} from './junction-geometry';
+} from '../geometry';
+import { PORT_SNAP_PX, SPLIT_HIT_TOLERANCE_PX, SPLIT_SNAP_GRID_PX } from '../config';
 
 // The wire being drawn, identified by the port it started from.
 interface BranchEdgeSpec {
@@ -48,9 +48,6 @@ interface JunctionSplit {
   readonly splitAxis: 'horizontal' | 'vertical';
   readonly halfPorts: readonly JunctionPortId[];
 }
-
-/** Where a port-snap distance applies — mirrors ng-diagram's default link snap. */
-const PORT_SNAP_PX = GRID_UNIT * 2;
 
 // Atomic ops on the wire/junction graph: attach, split, branch. Owns no state —
 // reads and mutates the diagram model directly.
@@ -102,8 +99,8 @@ export class JunctionTopologyService {
     const hit = findEdgeSplitHit(
       this.modelService.edges(),
       event.dropPosition,
-      GRID_UNIT,
-      GRID_UNIT,
+      SPLIT_HIT_TOLERANCE_PX,
+      SPLIT_SNAP_GRID_PX,
     );
     if (hit) {
       this.splitEdgeAtHit(branch, hit);
@@ -217,7 +214,12 @@ export class JunctionTopologyService {
       ...this.modelService.getConnectedEdges(junctionId).map((edge) => edge.id),
     ]);
     const candidates = this.modelService.edges().filter((edge) => !exclude.has(edge.id));
-    const hit = findEdgeSplitHit(candidates, releaseWorld, GRID_UNIT, GRID_UNIT);
+    const hit = findEdgeSplitHit(
+      candidates,
+      releaseWorld,
+      SPLIT_HIT_TOLERANCE_PX,
+      SPLIT_SNAP_GRID_PX,
+    );
     if (hit) {
       this.ngDiagramService.transaction(() => {
         const split = this.materializeJunctionSplit(hit);
