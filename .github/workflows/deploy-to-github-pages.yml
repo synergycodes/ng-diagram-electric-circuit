@@ -1,0 +1,59 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Allow the workflow to publish to GitHub Pages via OIDC.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One concurrent deploy; let an in-progress run finish rather than cancel it.
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # base-href must match the project-site path: https://<owner>.github.io/<repo>/
+      - name: Build
+        run: npm run build -- --base-href /ng-diagram-electric-circuit/
+
+      # GitHub Pages has no SPA fallback — serve index.html for unknown routes
+      # (deep links / refresh), and disable Jekyll so files load as-is.
+      - name: Add SPA fallback + .nojekyll
+        run: |
+          cp dist/ng-diagram-circuit-editor/browser/index.html dist/ng-diagram-circuit-editor/browser/404.html
+          touch dist/ng-diagram-circuit-editor/browser/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/ng-diagram-circuit-editor/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
