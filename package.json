@@ -40,7 +40,7 @@
     "@angular/compiler": "^19.2.25",
     "@angular/core": "^19.2.25",
     "@angular/forms": "^19.2.25",
-    "@angular/platform-browser": "^19.2.25",
+    "@angular/platform-browser": "^22.0.2",
     "@angular/router": "^19.2.25",
     "html-to-image": "^1.11.13",
     "ng-diagram": "^1.2.4",
