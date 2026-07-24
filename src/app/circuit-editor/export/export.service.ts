@@ -13,6 +13,9 @@ import { ProjectNameService } from '../top-navbar/project-name.service';
 import { portWorldPosition } from '../diagram/wire/geometry';
 import { JUNCTION_SIZE_PX, isJunctionNode, junctionCentre } from '../diagram/wire/junction';
 import { symbolBody } from '../diagram/node/symbols/symbol-shapes';
+import { buildCircuitDxfConfig } from './dxf-circuit/circuit-dxf-config';
+import { DxfExporter } from './dxf/dxf-exporter';
+import { DxfWriter } from './dxf/dxf-writer';
 
 /** Serialized circuit document: components plus their port-to-port connections. */
 interface CircuitDocument {
@@ -40,8 +43,8 @@ interface CircuitDocument {
 /**
  * Exports the schematic as JSON (a documented parts + connections format — the
  * connectivity standard for circuits is a SPICE netlist, but these generic
- * components don't map to SPICE device cards, so a clean JSON is used) or as a
- * JPEG snapshot of the canvas.
+ * components don't map to SPICE device cards, so a clean JSON is used), as a
+ * vector SVG, as a DXF (AutoCAD) drawing, or as a JPEG snapshot of the canvas.
  */
 @Injectable()
 export class ExportService {
@@ -88,6 +91,26 @@ export class ExportService {
     const svg = this.buildSvg();
     const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
     this.download(blob, `${this.projectName.fileName()}.svg`);
+  }
+
+  /**
+   * Exports the schematic as a DXF (AutoCAD R2000+) file built from the model —
+   * components, wires and junctions on their own layers, sized in millimetres.
+   * Uses the vendored `dxf/` serializer (a strict R2000+ skeleton that real
+   * desktop AutoCAD accepts) with circuit-specific renderers registered in
+   * `buildCircuitDxfConfig`.
+   */
+  exportDxf(): void {
+    const nodes = this.modelService.nodes();
+    if (nodes.length === 0) return;
+    const edges = this.modelService.edges();
+    const bounds = this.modelService.computePartsBounds(nodes, edges);
+
+    const doc = new DxfExporter(buildCircuitDxfConfig()).export(nodes, edges, bounds);
+    const content = new DxfWriter().serialize(doc);
+
+    const blob = new Blob([content], { type: 'application/dxf' });
+    this.download(blob, `${this.projectName.fileName()}.dxf`);
   }
 
   private buildSvg(): string {
