@@ -1,8 +1,8 @@
 import { formatCoord } from './dxf-format';
 
 /**
- * DXF entity primitives. This module knows nothing about ng-diagram or
- * av-schematic — only how to serialize a DXF entity record. Add a new
+ * DXF entity primitives. This module knows nothing about ng-diagram or the
+ * circuit domain — only how to serialize a DXF entity record. Add a new
  * subclass here to support a new DXF entity type (e.g. CIRCLE, ARC).
  */
 export abstract class DxfEntity {

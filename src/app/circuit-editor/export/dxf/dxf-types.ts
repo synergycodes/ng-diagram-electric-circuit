@@ -24,8 +24,8 @@ export interface DxfHeaderPair {
 
 /**
  * Configuration for a DXF export. Project-specific code builds one of these
- * (see av-dxf-config.ts) and passes it into DxfExporter — that's the entire
- * extension surface for plugging in new node/edge types.
+ * (see circuit-dxf-config.ts) and passes it into DxfExporter — that's the
+ * entire extension surface for plugging in new node/edge types.
  */
 export interface DxfExportConfig {
   readonly scaleMmPerPx: number;

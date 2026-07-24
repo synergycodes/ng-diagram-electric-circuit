@@ -96,9 +96,9 @@ export class ExportService {
   /**
    * Exports the schematic as a DXF (AutoCAD R2000+) file built from the model —
    * components, wires and junctions on their own layers, sized in millimetres.
-   * Uses the vendored `dxf/` serializer (kept byte-for-byte in sync with the
-   * ng-diagram-av-schematic reference so real AutoCAD accepts the output) with
-   * circuit-specific renderers registered in `buildCircuitDxfConfig`.
+   * Uses the vendored `dxf/` serializer (a strict R2000+ skeleton that real
+   * desktop AutoCAD accepts) with circuit-specific renderers registered in
+   * `buildCircuitDxfConfig`.
    */
   exportDxf(): void {
     const nodes = this.modelService.nodes();
