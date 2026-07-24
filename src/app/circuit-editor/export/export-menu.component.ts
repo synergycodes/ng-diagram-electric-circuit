@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ExportService } from './export.service';
 
-/** Navbar "Export" button that opens a dropdown offering JPEG / JSON export. */
+/** Navbar "Export" button that opens a dropdown offering SVG / JPEG / DXF / JSON export. */
 @Component({
   selector: 'app-export-menu',
   templateUrl: './export-menu.component.html',
@@ -29,6 +29,11 @@ export class ExportMenuComponent {
   protected exportJpeg(): void {
     this.close();
     void this.exportService.exportJpeg();
+  }
+
+  protected exportDxf(): void {
+    this.close();
+    this.exportService.exportDxf();
   }
 
   protected exportJson(): void {
