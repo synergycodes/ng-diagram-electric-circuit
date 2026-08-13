@@ -14,7 +14,7 @@ Features:
 - **Orthogonal wire editing** — reshape wires by dragging their segments, with grid snapping and port-anchored ends
 - **Wire junctions (link-to-link)** — drop or drag a wire onto another to create a solder-dot junction; branch from a wire, with junction port routing, merge-on-delete, and cleanup of orphaned junctions
 - Right-click **context menus** — copy / cut / paste / delete / rotate ±90° on a node, paste on the background
-- **Export** dropdown: editable SVG, JPEG snapshot of the canvas, or JSON (components + connections)
+- **Export** dropdown: **DXF** (vector, for AutoCAD / BricsCAD / LibreCAD — with layer mapping and text styles), editable SVG, JPEG snapshot of the canvas, or JSON (components + connections)
 - Properties sidebar with per-component-type specification fields (diagram-to-UI integration)
 - Minimap and zoom controls; full-height library / properties rails
 - Dark / light theme matching a dedicated design token system
