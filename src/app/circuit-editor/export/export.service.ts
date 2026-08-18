@@ -62,8 +62,10 @@ export class ExportService {
     const element = document.querySelector<HTMLElement>('ng-diagram');
     if (!element) return;
 
-    // Fit the whole schematic into view, then snapshot what's on screen.
-    this.viewport.zoomToFit({ padding: [40, 40, 40, 40] });
+    // Fit the whole schematic into view (awaitable since ng-diagram 1.3), then
+    // give the browser a couple of frames to paint the fitted transform before
+    // the DOM is cloned.
+    await this.viewport.zoomToFit({ padding: [40, 40, 40, 40] });
     await nextFrame();
 
     const background = readVar('--ce-bg-canvas') || '#0b0718';

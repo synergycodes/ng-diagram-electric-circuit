@@ -70,9 +70,9 @@ Open http://localhost:4200.
 | Ports               | `<ng-diagram-port>`                                                                     |
 | Palette (drag/drop) | `<ng-diagram-palette-item>`, `<ng-diagram-palette-item-preview>`, `paletteItemDropped`  |
 | Minimap             | `<ng-diagram-minimap>`                                                                  |
-| Model               | `initializeModel()`, `NgDiagramModelService`                                            |
+| Model               | `initializeModel()`, `NgDiagramModelService` (`getConnectedEdges`, awaitable `updateEdge`) |
 | Selection           | `NgDiagramSelectionService`                                                             |
-| Viewport            | `NgDiagramViewportService` (`zoomToFit`, `zoom`, `scale`)                               |
+| Viewport            | `NgDiagramViewportService` (awaitable `zoomToFit`, `zoom`, `scale`)                     |
 | Linking config      | `NgDiagramConfig.linking` (`validateConnection`, `finalEdgeDataBuilder`)                |
 | Edge routing        | `NgDiagramConfig.edgeRouting` (orthogonal) + `routingMode: 'manual'` for reshaped wires |
 | Middleware          | `createMiddlewares()` — custom junction port-routing middleware                         |
