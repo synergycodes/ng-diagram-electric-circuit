@@ -31,16 +31,16 @@ export function reconcileJunction(
   reconcileJunctions(modelService, ngDiagramService, [junctionId]);
 }
 
-// Reconcile several junctions and apply every change in ONE transaction. Doing
-// each merge in its own transaction within a tight loop collides — ng-diagram
-// batches them and only the first lands. Plans are computed from the current
-// (committed) model up front; junction halves are disjoint, so this is safe.
+// Reconcile several junctions and apply every change in ONE transaction, so
+// the whole fixup lands atomically as a single model commit with no
+// intermediate render of half-merged wires. Plans are computed from the
+// current (committed) model up front; junction halves are disjoint, so this is
+// safe.
 export function reconcileJunctions(
   modelService: NgDiagramModelService,
   ngDiagramService: NgDiagramService,
   junctionIds: readonly string[],
 ): void {
-  const edges = modelService.edges();
   const deleteEdgeIds: string[] = [];
   const deleteNodeIds: string[] = [];
   const addSpecs: ReturnType<typeof buildMergedWire>[] = [];
@@ -48,9 +48,7 @@ export function reconcileJunctions(
   for (const junctionId of junctionIds) {
     if (!junctionId) continue;
     if (!isJunctionNode(modelService.getNodeById(junctionId))) continue;
-    // Count from the authoritative edges() signal rather than getConnectedEdges,
-    // whose adjacency cache can lag a just-applied delete.
-    const connected = edges.filter((e) => e.source === junctionId || e.target === junctionId);
+    const connected = modelService.getConnectedEdges(junctionId);
     if (connected.length === 0) {
       deleteNodeIds.push(junctionId);
     } else if (connected.length === 2) {

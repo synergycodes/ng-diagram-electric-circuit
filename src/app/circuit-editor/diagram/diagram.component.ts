@@ -192,7 +192,7 @@ export class DiagramComponent {
 
   /** After a delete, drop orphaned junctions and merge any passthroughs. */
   onSelectionRemoved(event: SelectionRemovedEvent): void {
-    applyDeleteCleanup(
+    void applyDeleteCleanup(
       { modelService: this.modelService, ngDiagramService: this.ngDiagramService },
       event,
     );
