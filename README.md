@@ -70,7 +70,7 @@ Open http://localhost:4200.
 | Ports               | `<ng-diagram-port>`                                                                     |
 | Palette (drag/drop) | `<ng-diagram-palette-item>`, `<ng-diagram-palette-item-preview>`, `paletteItemDropped`  |
 | Minimap             | `<ng-diagram-minimap>`                                                                  |
-| Model               | `initializeModel()`, `NgDiagramModelService` (`getConnectedEdges`, awaitable `updateEdge`) |
+| Model               | `initializeModel()`, `NgDiagramModelService` (`getConnectedEdges`, awaitable `addEdges`) |
 | Selection           | `NgDiagramSelectionService`                                                             |
 | Viewport            | `NgDiagramViewportService` (awaitable `zoomToFit`, `zoom`, `scale`)                     |
 | Linking config      | `NgDiagramConfig.linking` (`validateConnection`, `finalEdgeDataBuilder`)                |

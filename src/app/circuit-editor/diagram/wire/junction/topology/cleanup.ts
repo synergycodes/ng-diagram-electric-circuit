@@ -32,8 +32,8 @@ export function reconcileJunction(
 }
 
 // Reconcile several junctions and apply every change in ONE transaction, so
-// the whole fixup lands atomically as a single model commit (one undo step, no
-// intermediate render with half-merged wires). Plans are computed from the
+// the whole fixup lands atomically as a single model commit with no
+// intermediate render of half-merged wires. Plans are computed from the
 // current (committed) model up front; junction halves are disjoint, so this is
 // safe.
 export function reconcileJunctions(

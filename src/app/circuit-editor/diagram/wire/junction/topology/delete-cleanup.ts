@@ -14,10 +14,10 @@ interface DeletePayload {
   readonly deletedEdges: readonly Edge[];
 }
 
-// Since ng-diagram 1.3 `selectionRemoved` is emitted after the delete is
-// committed, so the fixup runs straight from the handler. Reads go through the
-// committed model (`getModel()`) — the `nodes()`/`edges()` signals refresh on
-// the next change-detection pass and are still stale here (NGD-104).
+// `selectionRemoved` is emitted after the delete is committed, so the fixup
+// runs straight from the handler. Reads go through the committed model
+// (`getModel()`) — the `nodes()`/`edges()` signals refresh on the next
+// change-detection pass and are still stale inside event handlers.
 export async function applyDeleteCleanup(
   deps: DeleteCleanupDeps,
   payload: DeletePayload,
@@ -38,6 +38,8 @@ export async function applyDeleteCleanup(
 
   const demoted: Edge[] = [];
   for (const edge of payload.deletedEdges) {
+    // A wire the user deleted explicitly (part of the selection) stays deleted.
+    if (edge.selected) continue;
     const sourceAnchor = junctionAnchors.get(edge.source);
     const targetAnchor = junctionAnchors.get(edge.target);
     if (sourceAnchor && !deletedNodeIds.has(edge.target)) {
@@ -58,8 +60,8 @@ export async function applyDeleteCleanup(
       });
     }
   }
-  // Await the re-add (service methods are awaitable since 1.3) so the survivor
-  // reconciliation below sees the demoted wires, not a half-applied model.
+  // Await the re-add so the survivor reconciliation below sees the demoted
+  // wires, not a half-applied model.
   if (demoted.length > 0) await modelService.addEdges(demoted);
 
   // Reconcile every surviving junction whose branch count may have shifted:
